@@ -8,9 +8,9 @@ namespace Model
     ///<summary>
     ///
     ///</summary>
-    public partial class user
+    public partial class user_login
     {
-           public user(){
+           public user_login(){
 
 
            }
