@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -52,6 +54,67 @@ namespace frm_App
             catch (Exception ea)
             {
               
+            }
+        }
+
+        CookieContainer cookie = new CookieContainer();
+        public string HttpWebPost(string Url, string postDataStr)
+        {
+            string retString = null;
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+                byte[] byteArray = Encoding.UTF8.GetBytes(postDataStr);
+                request.Method = "POST";
+                request.Timeout = 100000;
+                request.ContentType = "application/json; charset=utf-8";
+                request.ContentLength = byteArray.Length;
+                request.CookieContainer = cookie;
+                //打开request字符流
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+
+                HttpWebResponse response = null;
+                try
+                {
+                    response = (HttpWebResponse)request.GetResponse();
+
+                    //获取相应的状态代码
+                    Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+
+                    //定义response字符流
+                    dataStream = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(dataStream);
+                    retString = reader.ReadToEnd();//读取所有
+                    Console.WriteLine(retString);
+                    reader.Close();
+                }
+                catch (WebException ex)
+                {
+                    response = (HttpWebResponse)ex.Response;
+                    //LogR.Logger.Error(ex, "request.GetResponse");
+                    //throw ex;
+                }
+            }
+            catch (Exception ex)
+            {
+                //LogR.Logger.Error(ex, "HttpPost");
+                throw ex;
+            }
+            return retString;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                richTextBox2.Text = HttpWebPost(textBox1.Text.Trim(),richTextBox1.Text.Trim().ToString());
+            }
+            catch(Exception error)
+            {
+                richTextBox2.Text = error.Message;
             }
         }
     }

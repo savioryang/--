@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using WebApI.handle;
 using System.Text;
 using SqlSugar;
+using System.IO;
+using System.Web;
 
 namespace WebApI.Controllers.user
 {
@@ -19,27 +21,47 @@ namespace WebApI.Controllers.user
         [Route("user/regis")]
         public IHttpActionResult GetRegisMsg(object obj)
         {
-            lock (obj)
+            JObject je = new JObject();
+            JObject jo = new JObject();
+            try
             {
-                JObject je = new JObject();
+                string getStr = string.Empty;
                 je = (JObject)JsonConvert.DeserializeObject(obj.ToString());
-                user_login user = new user_login();
-                user.userName = je["userName"].ToString();
-                user.userPwd = Md5Control.MD5Encrypt(je["userPwd"].ToString());
-                user.userID = datahandle.StringToHexString(user.userName + je["userPwd"].ToString(), Encoding.UTF8);
-                user.id = Convert.ToInt32(je["id"].ToString());
+                //判断一下用户名是否存在是否被注册过
                 datahandle.SqlConnect();
-                int Result = datahandle._db.Insertable(user).ExecuteCommand();
-                JObject jo = new JObject();
-                if (Result == 1)
+                List<user_login> list_user = datahandle._db.Queryable<user_login>().Where(t =>
+                t.userName == je["userName"].ToString()).ToList();
+                if (list_user.Count > 0)
                 {
-                    jo.Add("Message", "注册成功");
+                    jo.Add("Result", 3);
+                    jo.Add("Message", "用户名已存在");
                 }
                 else
-                    jo.Add("Message", "注册失败");
-                jo.Add("Result", Result);
-                return Json(jo.ToString());
+                {
+                    user_login user = new user_login();
+                    user.userName = je["userName"].ToString();
+                    user.userPwd = Md5Control.MD5Encrypt(je["userPwd"].ToString());
+                    user.userID = datahandle.StringToHexString(user.userName + je["userPwd"].ToString(), Encoding.UTF8);
+                    //user.id = Convert.ToInt32(je["id"].ToString());
+                    int Result = datahandle._db.Insertable(user).ExecuteCommand();
+                    if (Result == 1)
+                    {
+                        jo.Add("Message", "注册成功");
+                        jo.Add("Result", 1);
+                    }
+                    else
+                    {
+                        jo.Add("Result", 0);
+                        jo.Add("Message", "注册失败");
+                    }
+                }
             }
+            catch(Exception error)
+            {
+                jo.Add("Result", 4);
+                jo.Add("Message", error.Message);
+            }
+            return Json(jo.ToString());
         }
     }
 }
