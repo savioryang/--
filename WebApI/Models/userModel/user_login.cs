@@ -34,7 +34,7 @@ namespace Model
            /// Nullable:False
            /// </summary>   
            [SugarColumn (IsPrimaryKey =true)]
-           public int id {get;}
+           public int id { get; set; }
 
            /// <summary>
            /// Desc:

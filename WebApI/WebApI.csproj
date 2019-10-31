@@ -179,6 +179,7 @@
     <Compile Include="Controllers\SmtpCode\CodeController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\user\UserLoginController.cs" />
+    <Compile Include="Controllers\user\UserPassRecoveryController.cs" />
     <Compile Include="Controllers\user\UserRegisController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -188,6 +189,7 @@
     <Compile Include="handle\Md5handle.cs" />
     <Compile Include="handle\SmtpHandle.cs" />
     <Compile Include="Models\userModel\user_login.cs" />
+    <Compile Include="Models\userModel\user_recovery.cs" />
     <Compile Include="Models\userModel\user_sub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
