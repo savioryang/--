@@ -188,6 +188,7 @@
     <Compile Include="handle\datahandle.cs" />
     <Compile Include="handle\Md5handle.cs" />
     <Compile Include="handle\SmtpHandle.cs" />
+    <Compile Include="Models\forumModel\board_all_systerm.cs" />
     <Compile Include="Models\userModel\user_login.cs" />
     <Compile Include="Models\userModel\user_recovery.cs" />
     <Compile Include="Models\userModel\user_sub.cs" />
