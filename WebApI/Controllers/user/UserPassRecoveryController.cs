@@ -17,8 +17,6 @@ namespace WebApI.Controllers.user
         {
             Mailbox,
             ShortMessage,
-
-
         }
 
        /// <summary>
@@ -38,7 +36,7 @@ namespace WebApI.Controllers.user
             datahandle.SqlConnect();
             //校验客户账户是否存在
             List<user_login> list_user = datahandle._db.Queryable<user_login>().Where(t =>
-               t.userName == je["userName"].ToString()  ).ToList();
+               t.userName == je["userName"].ToString()).ToList();
             if (list_user.Count > 0)
             {
                 user_login user_LoginModel = list_user.First();
@@ -93,21 +91,16 @@ namespace WebApI.Controllers.user
                 }
                 else
                 {
-
                     jo.Add("Result", 2);
                     jo.Add("Message", "用户不存在，请先注册！");
                 }
-            
             }
             catch (Exception error)
             {
                 jo.Add("Result", -1);
                 jo.Add("Message", error.Message);
             }
-
-
             return Json(jo.ToString());
         }
-    
     }
 }
