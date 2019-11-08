@@ -12,28 +12,32 @@ namespace WebApI.handle
         public static string SendMsg(string user)
         {
             //实例化一个发送邮件类。
-            MailMessage mailMessage = new MailMessage();
-            //发件人邮箱地址，方法重载不同，可以根据需求自行选择。
-            mailMessage.From = new MailAddress("826569867@qq.com");
-            //收件人邮箱地址。
-            //mailMessage.To.Add(new MailAddress("1424503386@qq.com"));
-            //邮件标题。
-            mailMessage.Subject = "这是您的验证码，请在规定的时间正确填写！";
+            MailMessage mailMessage = new MailMessage
+            {
+                //发件人邮箱地址，方法重载不同，可以根据需求自行选择。
+                From = new MailAddress("826569867@qq.com"),
+                //收件人邮箱地址。
+                //mailMessage.To.Add(new MailAddress("1424503386@qq.com"));
+                //邮件标题。
+                Subject = "这是您的验证码，请在规定的时间正确填写！"
+            };
             //邮件内容。
             string code = GuidCode();
             mailMessage.Body = "您的验证码是:"+ code;
             mailMessage.To.Add(user);
             mailMessage.Priority = MailPriority.High;
             //实例化一个SmtpClient类。
-            SmtpClient client = new SmtpClient();
-            //在这里我使用的是qq邮箱，所以是smtp.qq.com，如果你使用的是126邮箱，那么就是smtp.126.com。
-            client.Host = "smtp.qq.com";
-            //使用安全加密连接。
-            client.EnableSsl = true;
-            //不和请求一块发送。
-            client.UseDefaultCredentials = false;
-            //验证发件人身份(发件人的邮箱，邮箱里的生成授权码);
-            client.Credentials = new NetworkCredential("826569867@qq.com", "sjniyzkrnogibbcg");
+            SmtpClient client = new SmtpClient
+            {
+                //在这里我使用的是qq邮箱，所以是smtp.qq.com，如果你使用的是126邮箱，那么就是smtp.126.com。
+                Host = "smtp.qq.com",
+                //使用安全加密连接。
+                EnableSsl = true,
+                //不和请求一块发送。
+                UseDefaultCredentials = false,
+                //验证发件人身份(发件人的邮箱，邮箱里的生成授权码);
+                Credentials = new NetworkCredential("826569867@qq.com", "sjniyzkrnogibbcg")
+            };
             //发送
             client.Send(mailMessage);
             return code;

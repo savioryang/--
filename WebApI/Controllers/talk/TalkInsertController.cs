@@ -25,10 +25,22 @@ namespace WebApI.Controllers.talk
                 je = (JObject)JsonConvert.DeserializeObject(obj.ToString());
                 datahandle.SqlConnect();
                 JavaScriptSerializer JavaScriptSerializer1 = new JavaScriptSerializer();
-                board_all_systerm result = JavaScriptSerializer1.Deserialize<board_all_systerm>(obj.ToString());
+                board_all_systerm board_all_systerm_list = JavaScriptSerializer1.Deserialize<board_all_systerm>(obj.ToString());
+                int count= datahandle._db.Insertable(board_all_systerm_list).ExecuteCommand();
+                if (count == 1)
+                {
+                    jo.Add("Result", 1);
+                    jo.Add("Message", "操作成功");
+                }
+                else
+                {
+                    jo.Add("Result", 0);
+                    jo.Add("Message", "操作失败");
+                }
             }
             catch(Exception error)
             {
+                jo.Add("Result", -1);
                 jo.Add("Message", error.Message);
             }
             return Json(jo.ToString());
