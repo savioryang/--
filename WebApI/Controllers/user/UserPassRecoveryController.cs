@@ -42,8 +42,7 @@ namespace WebApI.Controllers.user
             {
                 user_login user_LoginModel = list_user.First();
                 user_LoginModel.userPwd = Md5Control.MD5Encrypt(je["userPwd"].ToString());
-            
-               int  Result = sql.Updateable<user_login>(user_LoginModel).ExecuteCommand();
+                int  Result = sql.Updateable<user_login>(user_LoginModel).ExecuteCommand();
                 if (Result == 1)
                 {
                     jo.Add("Message", "修改完成");

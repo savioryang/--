@@ -24,7 +24,7 @@ namespace WebApI.handle
             }
             catch (Exception ea)
             {
-
+                _db = null;
             }
         }
         //将静态变量改成单例

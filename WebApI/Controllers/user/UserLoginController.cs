@@ -26,21 +26,20 @@ namespace WebApI.Controllers.user
                 SqlSugarClient sql = datahandle.GetDataConnect();
                 List<user_login> list_user = sql.Queryable<user_login>().Where(t =>
                 t.userName == je["userName"].ToString()).ToList();
-                if (list_user.Count ==1)
+                if (list_user.Count == 1)
                 {
-                    foreach (user_login user_Login in list_user)
+                    user_login user_Login = list_user[0];
+                    if (user_Login.userPwd == Md5Control.MD5Encrypt(je["userPwd"].ToString()))
                     {
-                        if (user_Login.userPwd == Md5Control.MD5Encrypt(je["userPwd"].ToString()))
-                        {
-                            jo.Add("Result", 1);
-                            jo.Add("Message", "登录成功");
-                        }
-                        else
-                        {
-                            jo.Add("Result", 0);
-                            jo.Add("Message", "登录失败，密码错误");
-                        }
+                        jo.Add("Result", 1);
+                        jo.Add("Message", "登录成功");
                     }
+                    else
+                    {
+                        jo.Add("Result", 0);
+                        jo.Add("Message", "登录失败，密码错误");
+                    }
+
                 }
                 else
                 {
