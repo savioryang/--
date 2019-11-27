@@ -1,9 +1,11 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApI.handle;
 
 namespace WebApI.Controllers
 {
@@ -13,8 +15,8 @@ namespace WebApI.Controllers
         [Route("api/home/getem")]
         public IHttpActionResult Getemdsda()
         {
-         
-            return Json("测试成功");
+            SqlSugarClient sql = datahandle.GetDataConnect();
+            return Json("测试成功");            
         }
 
         [HttpPost]

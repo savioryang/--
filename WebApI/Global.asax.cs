@@ -15,6 +15,7 @@ namespace WebApI
         protected void Application_Start()
         {
             InitConfig();//加载配置文件
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

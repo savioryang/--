@@ -28,8 +28,8 @@ namespace WebApI.Controllers.user
                 string getStr = string.Empty;
                 je = (JObject)JsonConvert.DeserializeObject(obj.ToString());
                 //判断一下用户名是否存在是否被注册过
-                datahandle.SqlConnect();
-                List<user_login> list_user = datahandle._db.Queryable<user_login>().Where(t =>
+                SqlSugarClient sql = datahandle.GetDataConnect();
+                List<user_login> list_user = sql.Queryable<user_login>().Where(t =>
                 t.userName == je["userName"].ToString()).ToList();
                 if (list_user.Count > 0)
                 {
@@ -41,9 +41,9 @@ namespace WebApI.Controllers.user
                     user_login user = new user_login();
                     user.userName = je["userName"].ToString();
                     user.userPwd = Md5Control.MD5Encrypt(je["userPwd"].ToString());
-                    user.userID = datahandle.StringToHexString(user.userName + je["userPwd"].ToString(), Encoding.UTF8);
+                    user.userID = dataTransfer.StringToHexString(user.userName + je["userPwd"].ToString(), Encoding.UTF8);
                     //user.id = Convert.ToInt32(je["id"].ToString());
-                    int Result = datahandle._db.Insertable(user).ExecuteCommand();
+                    int Result = sql.Insertable(user).ExecuteCommand();
                     if (Result == 1)
                     {
                         jo.Add("Message", "注册成功");

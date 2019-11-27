@@ -1,6 +1,7 @@
 ﻿using Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,18 +32,18 @@ namespace WebApI.Controllers.user
             JObject je = new JObject();
             JObject jo = new JObject();
             string getStr = string.Empty;
-            je = (JObject)JsonConvert.DeserializeObject(obj.ToString()); 
+            je = (JObject)JsonConvert.DeserializeObject(obj.ToString());
 
-            datahandle.SqlConnect();
+            SqlSugarClient sql = datahandle.GetDataConnect();
             //校验客户账户是否存在
-            List<user_login> list_user = datahandle._db.Queryable<user_login>().Where(t =>
+            List<user_login> list_user = sql.Queryable<user_login>().Where(t =>
                t.userName == je["userName"].ToString()).ToList();
             if (list_user.Count > 0)
             {
                 user_login user_LoginModel = list_user.First();
                 user_LoginModel.userPwd = Md5Control.MD5Encrypt(je["userPwd"].ToString());
             
-               int  Result =  datahandle._db.Updateable<user_login>(user_LoginModel).ExecuteCommand();
+               int  Result = sql.Updateable<user_login>(user_LoginModel).ExecuteCommand();
                 if (Result == 1)
                 {
                     jo.Add("Message", "修改完成");
@@ -74,14 +75,14 @@ namespace WebApI.Controllers.user
             {
                 string getStr = string.Empty;
                 je = (JObject)JsonConvert.DeserializeObject(obj.ToString());
-                datahandle.SqlConnect();
+                SqlSugarClient sql = datahandle.GetDataConnect();
                 //校验客户账户是否存在
-                List<user_login> list_user = datahandle._db.Queryable<user_login>().Where(t =>
+                List<user_login> list_user = sql.Queryable<user_login>().Where(t =>
                    t.userName == je["userName"].ToString()).ToList();
                 if (list_user.Count > 0)
                 {
                     //获取密保问题
-                    List<user_recovery> list_SecretProtection = datahandle._db.Queryable<user_recovery>().Where(
+                    List<user_recovery> list_SecretProtection = sql.Queryable<user_recovery>().Where(
                         r => list_user.First().userID == r.userID
                         ).ToList(); 
                     jo.Add("Result", 1);

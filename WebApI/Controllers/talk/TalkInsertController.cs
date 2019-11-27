@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using WebApI.handle;
 using System.Web.Script.Serialization;
+using SqlSugar;
 
 namespace WebApI.Controllers.talk
 {
@@ -22,11 +23,10 @@ namespace WebApI.Controllers.talk
             JObject jo = new JObject();
             try
             {
-                je = (JObject)JsonConvert.DeserializeObject(obj.ToString());
-                datahandle.SqlConnect();
+                SqlSugarClient sql = datahandle.GetDataConnect();
                 JavaScriptSerializer JavaScriptSerializer1 = new JavaScriptSerializer();
                 board_all_systerm board_all_systerm_list = JavaScriptSerializer1.Deserialize<board_all_systerm>(obj.ToString());
-                int count= datahandle._db.Insertable(board_all_systerm_list).ExecuteCommand();
+                int count= sql.Insertable(board_all_systerm_list).ExecuteCommand();
                 if (count == 1)
                 {
                     jo.Add("Result", 1);

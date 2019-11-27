@@ -1,6 +1,7 @@
 ﻿using Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,8 @@ namespace WebApI.Controllers.user
             try
             {
                 je = (JObject)JsonConvert.DeserializeObject(obj.ToString());
-                datahandle.SqlConnect();
-                List<user_login> list_user = datahandle._db.Queryable<user_login>().Where(t =>
+                SqlSugarClient sql = datahandle.GetDataConnect();
+                List<user_login> list_user = sql.Queryable<user_login>().Where(t =>
                 t.userName == je["userName"].ToString()).ToList();
                 if (list_user.Count ==1)
                 {
