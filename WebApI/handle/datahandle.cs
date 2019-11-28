@@ -9,7 +9,7 @@ namespace WebApI.handle
 {
     public class datahandle
     {
-        private  static SqlSugarClient _db=null;
+       
         private  static void SqlConnect()
         {
             try
@@ -29,6 +29,7 @@ namespace WebApI.handle
         }
         //将静态变量改成单例
         private static readonly object data_lock = new object();
+        private static SqlSugarClient _db = null;
         public static SqlSugarClient GetDataConnect()
         {
             if (_db == null)

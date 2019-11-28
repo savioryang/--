@@ -9,6 +9,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebApI.handle;
+using LogR;
+using log4net.Repository.Hierarchy;
 
 namespace WebApI.Controllers.user
 {
@@ -18,11 +20,13 @@ namespace WebApI.Controllers.user
         [Route("user/login")]
         public IHttpActionResult UserLogin(dynamic obj)
         {
-            JObject je = new JObject();
+           
+           JObject je = new JObject();
             JObject jo = new JObject();
             try
             {
                 je = (JObject)JsonConvert.DeserializeObject(obj.ToString());
+                LoggerHelp.LogInfo("UserLogin接收数据："+ Md5Control.MD5Encrypt(je.ToString()));
                 SqlSugarClient sql = datahandle.GetDataConnect();
                 List<user_login> list_user = sql.Queryable<user_login>().Where(t =>
                 t.userName == je["userName"].ToString()).ToList();
@@ -52,6 +56,7 @@ namespace WebApI.Controllers.user
                 jo.Add("Result", -1);
                 jo.Add("Message", error.Message);
             }
+            LoggerHelp.LogInfo("UserLogin返回数据：" + jo);
             return Json(jo.ToString());
         }
     }

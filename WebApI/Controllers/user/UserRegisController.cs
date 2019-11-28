@@ -27,6 +27,7 @@ namespace WebApI.Controllers.user
             {
                 string getStr = string.Empty;
                 je = (JObject)JsonConvert.DeserializeObject(obj.ToString());
+                LoggerHelp.LogInfo("GetRegisMsg接收数据：" + je);
                 //判断一下用户名是否存在是否被注册过
                 SqlSugarClient sql = datahandle.GetDataConnect();
                 List<user_login> list_user = sql.Queryable<user_login>().Where(t =>
@@ -61,6 +62,7 @@ namespace WebApI.Controllers.user
                 jo.Add("Result", 4);
                 jo.Add("Message", error.Message);
             }
+            LoggerHelp.LogInfo("GetRegisMsg返回数据：" + jo);
             return Json(jo.ToString());
         }
     }

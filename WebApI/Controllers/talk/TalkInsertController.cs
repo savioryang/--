@@ -23,6 +23,7 @@ namespace WebApI.Controllers.talk
             JObject jo = new JObject();
             try
             {
+                LoggerHelp.LogInfo("TalkInsert接收数据：" + obj.ToString());
                 SqlSugarClient sql = datahandle.GetDataConnect();
                 JavaScriptSerializer JavaScriptSerializer1 = new JavaScriptSerializer();
                 board_all_systerm board_all_systerm_list = JavaScriptSerializer1.Deserialize<board_all_systerm>(obj.ToString());
@@ -43,7 +44,8 @@ namespace WebApI.Controllers.talk
                 jo.Add("Result", -1);
                 jo.Add("Message", error.Message);
             }
+            LoggerHelp.LogInfo("TalkInsert返回数据：" + jo);
             return Json(jo.ToString());
-;        }
+        }
     }
 }
