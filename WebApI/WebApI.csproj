@@ -190,6 +190,7 @@
     <Compile Include="Controllers\SmtpCode\CodeController.cs" />
     <Compile Include="Controllers\talk\TalkInsertController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\user\PwdUpdateController.cs" />
     <Compile Include="Controllers\user\UserLoginController.cs" />
     <Compile Include="Controllers\user\UserPassRecoveryController.cs" />
     <Compile Include="Controllers\user\UserRegisController.cs" />

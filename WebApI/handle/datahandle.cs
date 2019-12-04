@@ -9,7 +9,6 @@ namespace WebApI.handle
 {
     public class datahandle
     {
-       
         private  static void SqlConnect()
         {
             try
@@ -45,5 +44,4 @@ namespace WebApI.handle
             return _db;
         }
     };
-
 }
